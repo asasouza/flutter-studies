@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './question.dart';
+import './answer.dart';
 
 // void main() {
 //  runApp(MainApp());
@@ -29,35 +30,38 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    var questions = [
-      'What\'s your favorite color?',
-      'What\'s your favorite animal?'
+    const questions = [
+      {
+        'question': 'What\'s your favorite color?',
+        'answers': ['Red', 'Black', 'Blue', 'White']
+      },
+      {
+        'question': 'What\'s your favorite animal?',
+        'answers': ['Dog', 'Cat', 'Horse', 'Chicken']
+      },
+      {
+        'question': 'What\'s your favorite character?',
+        'answers': ['Batman', 'Superman', 'Spider Man', 'Thor']
+      },
     ];
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('My Application'),
         ),
-        body: Column(
-          children: [
-            Question(questions[_questionIndex]),
-            RaisedButton(
-              child: Text('Answer 1'),
-              onPressed: _onAnswer,
-            ),
-            RaisedButton(
-              child: Text('Answer 2'),
-              onPressed: () => print('Answer 2 chosen'),
-            ),
-            RaisedButton(
-              child: Text('Answer 3'),
-              onPressed: () {
-                //...
-                print('Answer 3 chosen');
-              },
-            ),
-          ],
-        ),
+        body: _questionIndex < questions.length
+            ? Column(
+                children: [
+                  Question(questions[_questionIndex]['question']),
+                  ...(questions[_questionIndex]['answers'] as List<String>)
+                      .map((answer) {
+                    return Answer(answer, _onAnswer);
+                  }).toList(),
+                ],
+              )
+            : Center(
+                child: Text('You did it!'),
+              ),
       ),
     );
   }
