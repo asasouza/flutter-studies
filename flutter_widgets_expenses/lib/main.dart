@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 import './transaction.dart';
 
 void main() => runApp(MyApp());
@@ -36,6 +38,9 @@ class HomeScreen extends StatelessWidget {
     ),
   ];
 
+  final titleController = TextEditingController();
+  final amountController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,6 +58,35 @@ class HomeScreen extends StatelessWidget {
             height: 150,
             width: double.infinity,
           ),
+          Card(
+            child: Container(
+              child: Column(
+                children: <Widget>[
+                  TextField(
+                    controller: titleController,
+                    decoration: InputDecoration(labelText: 'Title'),
+                  ),
+                  TextField(
+                    controller: amountController,
+                    decoration: InputDecoration(labelText: 'Amount'),
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  ),
+                  FlatButton(
+                    child: Text('Add Transaction'),
+                    textColor: Colors.purple,
+                    onPressed: () {
+                      print(titleController.text);
+                      print(amountController.text);
+                    },
+                  ),
+                ],
+                crossAxisAlignment: CrossAxisAlignment.end,
+              ),
+              padding: EdgeInsets.all(10),
+            ),
+            elevation: 5,
+            margin: EdgeInsets.symmetric(vertical: 10),
+          ),
           Column(
             children: transactions.map(
               (transaction) {
@@ -61,7 +95,7 @@ class HomeScreen extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         child: Text(
-                          transaction.amount.toString(),
+                          '\$ ${transaction.amount}',
                           style: TextStyle(
                             color: Colors.purple,
                             fontSize: 20,
@@ -89,7 +123,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            transaction.date.toString(),
+                            DateFormat.yMMMd().format(transaction.date),
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 15,
