@@ -9,61 +9,75 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView.builder(
-        itemBuilder: (context, index) {
-          Transaction transaction = transactions[index];
-
-          return Card(
-            child: Row(
-              children: <Widget>[
-                Container(
-                  child: Text(
-                    '\$ ${transaction.amount.toStringAsFixed(2)}',
-                    style: TextStyle(
-                      color: Colors.purple,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                    color: Colors.purple,
-                    width: 2,
-                  )),
-                  margin: EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 15,
-                  ),
-                  padding: EdgeInsets.all(10),
+    return transactions.isEmpty
+        ? Column(
+            children: <Widget>[
+              Text(
+                'No transactions founded!',
+                style: Theme.of(context).textTheme.title,
+              ),
+              SizedBox(height: 30),
+              Container(
+                child: Image.asset(
+                  'assets/images/waiting.png',
+                  fit: BoxFit.cover,
                 ),
-                Column(
-                  children: <Widget>[
-                    Text(
-                      transaction.title,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                height: 200,
+              )
+            ],
+          )
+        : Container(
+            child: ListView.builder(
+              itemBuilder: (context, index) {
+                Transaction transaction = transactions[index];
+
+                return Card(
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          '\$ ${transaction.amount.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                          color: Theme.of(context).primaryColor,
+                          width: 2,
+                        )),
+                        margin: EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 15,
+                        ),
+                        padding: EdgeInsets.all(10),
                       ),
-                    ),
-                    Text(
-                      DateFormat.yMMMd().format(transaction.date),
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ],
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                )
-              ],
+                      Column(
+                        children: <Widget>[
+                          Text(
+                            transaction.title,
+                            style: Theme.of(context).textTheme.title,
+                          ),
+                          Text(
+                            DateFormat.yMMMd().format(transaction.date),
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                      )
+                    ],
+                  ),
+                  elevation: 5,
+                );
+              },
+              itemCount: transactions.length,
             ),
-            elevation: 5,
+            height: 300,
           );
-        },
-        itemCount: transactions.length,
-      ),
-      height: 300,
-    );
   }
 }
