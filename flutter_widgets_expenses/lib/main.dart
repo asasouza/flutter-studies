@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
                 ),
               ),
         ),
+        errorColor: Colors.red.shade300,
         fontFamily: 'Quicksand',
         primarySwatch: Colors.purple,
         textTheme: ThemeData.light().textTheme.copyWith(
@@ -31,6 +32,9 @@ class MyApp extends StatelessWidget {
                 fontFamily: 'OpenSans',
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
+              ),
+              button: TextStyle(
+                color: Colors.white,
               ),
             ),
       ),
@@ -64,16 +68,34 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
   ];
 
-  void _addTransaction(String title, double amount) {
+  List<Transaction> get _recentTransactions {
+    return _userTransactions.where((transaction) {
+      return transaction.date.isAfter(
+        DateTime.now().subtract(
+          Duration(
+            days: 7,
+          ),
+        ),
+      );
+    }).toList();
+  }
+
+  void _addTransaction(String title, double amount, DateTime selectedDate) {
     final transaction = new Transaction(
       title: title,
       amount: amount,
-      date: DateTime.now(),
+      date: selectedDate,
       id: DateTime.now().toString(),
     );
 
     setState(() {
       _userTransactions.add(transaction);
+    });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((transaction) => transaction.id == id);
     });
   }
 
@@ -100,8 +122,8 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Chart(_userTransactions),
-            TransactionList(_userTransactions)
+            Chart(_recentTransactions),
+            TransactionList(_userTransactions, _deleteTransaction),
           ],
         ),
       ),
