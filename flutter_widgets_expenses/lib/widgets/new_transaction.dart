@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import './adaptive_flat_button.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function onAddTransaction;
@@ -46,57 +51,68 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: titleController,
-              decoration: InputDecoration(labelText: 'Title'),
-              onSubmitted: (_) => onSubmit(),
-            ),
-            TextField(
-              controller: amountController,
-              decoration: InputDecoration(labelText: 'Amount'),
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              onSubmitted: (_) => onSubmit(),
-            ),
-            Container(
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      _selectedDate == null
-                          ? 'No date chosen!'
-                          : 'Picked date: ${DateFormat.yMd().format(_selectedDate)}',
-                    ),
-                  ),
-                  FlatButton(
-                    child: Text(
-                      'Choose Date',
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: _openDatePicker,
-                  )
-                ],
+    return SingleChildScrollView(
+      child: Card(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              TextField(
+                controller: titleController,
+                decoration: InputDecoration(labelText: 'Title'),
+                onSubmitted: (_) => onSubmit(),
               ),
-              height: 70,
-            ),
-            RaisedButton(
-              child: Text('Add Transaction'),
-              color: Theme.of(context).primaryColor,
-              onPressed: onSubmit,
-              textColor: Theme.of(context).textTheme.button.color,
-            ),
-          ],
-          crossAxisAlignment: CrossAxisAlignment.end,
+              TextField(
+                controller: amountController,
+                decoration: InputDecoration(labelText: 'Amount'),
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                onSubmitted: (_) => onSubmit(),
+              ),
+              Container(
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        _selectedDate == null
+                            ? 'No date chosen!'
+                            : 'Picked date: ${DateFormat.yMd().format(_selectedDate)}',
+                      ),
+                    ),
+                    Platform.isIOS
+                        ? CupertinoButton(
+                            child: Text(
+                              'Choose Date',
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: _openDatePicker,
+                          )
+                        : FlatButton(
+                            child: Text(
+                              'Choose Date',
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: _openDatePicker,
+                          )
+                  ],
+                ),
+                height: 70,
+              ),
+              AdaptiveFlatButton('Choose Date', _openDatePicker),
+            ],
+            crossAxisAlignment: CrossAxisAlignment.end,
+          ),
+          padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+              left: 10,
+              right: 10,
+              top: 10),
         ),
-        padding: EdgeInsets.all(10),
+        elevation: 5,
+        margin: EdgeInsets.symmetric(vertical: 10),
       ),
-      elevation: 5,
-      margin: EdgeInsets.symmetric(vertical: 10),
     );
   }
 }
