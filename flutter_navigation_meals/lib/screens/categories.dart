@@ -5,6 +5,8 @@ import '../widgets/category_item.dart';
 import '../datas/categories.dart';
 
 class CategoriesScreen extends StatelessWidget {
+  static String routeName = '/';
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,8 +16,9 @@ class CategoriesScreen extends StatelessWidget {
       body: GridView(
         children: DUMMY_CATEGORIES.map((category) {
           return CategoryItem(
-            category.title,
-            category.color,
+            color: category.color,
+            id: category.id,
+            title: category.title,
           );
         }).toList(),
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
