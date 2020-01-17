@@ -10,7 +10,7 @@ class MealItem extends StatelessWidget {
   final int duration;
   final String id;
   final String imageUrl;
-  final Function onRemoveMeal;
+  // final Function onRemoveMeal;
   final String title;
 
   MealItem({
@@ -19,7 +19,7 @@ class MealItem extends StatelessWidget {
     @required this.duration,
     @required this.id,
     @required this.imageUrl,
-    @required this.onRemoveMeal,
+    // @required this.onRemoveMeal,
     @required this.title,
   });
 
@@ -55,11 +55,12 @@ class MealItem extends StatelessWidget {
       arguments: {
         'id': id,
       },
-    ).then((data) {
-      if (data != null) {
-        onRemoveMeal(data);
-      }
-    });
+    );
+    // .then((data) {
+    //   if (data != null) {
+    //     onRemoveMeal(data);
+    //   }
+    // });
   }
 
   @override

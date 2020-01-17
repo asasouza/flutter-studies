@@ -5,6 +5,12 @@ import '../datas/meals.dart';
 class MealDetail extends StatelessWidget {
   static const String routeName = '/meal-detail';
 
+  final Function isFavoriteMeal;
+  final Function toggleFavoriteMeal;
+  
+
+  MealDetail(this.toggleFavoriteMeal, this.isFavoriteMeal);
+
   Widget renderTitle(BuildContext context, String title) {
     return Container(
       child: Text(
@@ -83,12 +89,20 @@ class MealDetail extends StatelessWidget {
         ),
         padding: EdgeInsets.only(bottom: 20),
       ),
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Theme.of(context).primaryColor,
+      //   child: Icon(Icons.delete, color: Colors.white,),
+      //   onPressed: () {
+      //     Navigator.of(context).pop(id);
+      //   },
+      // ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
-        child: Icon(Icons.delete, color: Colors.white,),
-        onPressed: () {
-          Navigator.of(context).pop(id);
-        },
+        child: Icon(
+          isFavoriteMeal(id) ? Icons.star : Icons.star_border,
+          color: Colors.white,
+        ),
+        onPressed: () => toggleFavoriteMeal(id),
       ),
     );
   }
