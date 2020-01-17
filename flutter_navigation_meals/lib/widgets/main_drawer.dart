@@ -41,11 +41,11 @@ class MainDrawer extends StatelessWidget {
             ),
             SizedBox(height: 20,),
             _renderLink('Meals', Icons.restaurant, (){
-              Navigator.of(context).pushNamed(TabsScreen.routeName);
+              Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);
             },),
             SizedBox(height: 20,),
             _renderLink('Settings', Icons.settings, (){
-              Navigator.of(context).pushNamed(SettingsScreen.routeName);
+              Navigator.of(context).pushReplacementNamed(SettingsScreen.routeName);
             }),
           ],
         ),
