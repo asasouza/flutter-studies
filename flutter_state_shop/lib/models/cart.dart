@@ -24,7 +24,7 @@ class Cart with ChangeNotifier {
   int get countItems {
     var count = 0;
     _items.forEach((index, cartItem) {
-      count += cartItem.quantity; 
+      count += cartItem.quantity;
     });
     return count;
   }
@@ -69,6 +69,25 @@ class Cart with ChangeNotifier {
   void removeItem(String productId) {
     _items.remove(productId);
     notifyListeners();
+  }
+
+  void removeSingleItem(String productId) {
+    if (!_items.containsKey(productId)) {
+      return;
+    }
+
+    if (_items[productId].quantity > 1) {
+      _items.update(productId, (cartItem) {
+        return CartItem(
+          id: cartItem.id,
+          price: cartItem.price,
+          title: cartItem.title,
+          quantity: cartItem.quantity - 1,
+        );
+      });
+    } else {
+      removeItem(productId);
+    }
   }
 
   void clear() {
