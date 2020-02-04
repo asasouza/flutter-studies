@@ -26,20 +26,23 @@ class UserProductsScreen extends StatelessWidget {
         ],
         title: Text('Your Products'),
       ),
-      body: Padding(
-        child: ListView.builder(
-          itemBuilder: (context, index) {
-            final product = products.items[index];
-            return UserProductItem(
-              id: product.id,
-              imageUrl: product.imageUrl,
-              price: product.price,
-              title: product.title,
-            );
-          },
-          itemCount: products.items.length,
+      body: RefreshIndicator(
+        child: Padding(
+          child: ListView.builder(
+            itemBuilder: (context, index) {
+              final product = products.items[index];
+              return UserProductItem(
+                id: product.id,
+                imageUrl: product.imageUrl,
+                price: product.price,
+                title: product.title,
+              );
+            },
+            itemCount: products.items.length,
+          ),
+          padding: EdgeInsets.all(8),
         ),
-        padding: EdgeInsets.all(8),
+        onRefresh: Provider.of<Products>(context, listen: false).fetchAndSetItems,
       ),
       drawer: AppDrawer(),
     );
