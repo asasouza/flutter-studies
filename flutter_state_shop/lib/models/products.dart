@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import './exception_http.dart';
 import './product.dart';
 
 class Products with ChangeNotifier {
@@ -19,8 +20,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetItems() {
-    return http.get(url)
-    .then((response) {
+    return http.get(url).then((response) {
       var decodedResponse = json.decode(response.body) as Map<String, dynamic>;
       decodedResponse.forEach((productId, product) {
         _items.add(Product(
@@ -61,17 +61,44 @@ class Products with ChangeNotifier {
     });
   }
 
-  void updateItem(String id, Product product) {
+  Future<void> updateItem(String id, Product product) {
     final index = _items.indexWhere((product) => product.id == id);
     if (index >= 0) {
-      _items[index] = product;
-      notifyListeners();
+      final url =
+          'https://flutter-studies-5fc09.firebaseio.com/products/$id.json';
+      return http
+          .patch(
+        url,
+        body: json.encode({
+          'title': product.title,
+          'description': product.description,
+          'price': product.price,
+          'imageUrl': product.imageUrl,
+        }),
+      )
+          .then((_) {
+        _items[index] = product;
+        notifyListeners();
+      });
     }
+    return Future.value();
   }
 
-  void deleteItem(String id) {
-    _items.removeWhere((product) => product.id == id);
+  Future<void> deleteItem(String id) {
+    final url = 'https://flutter-studies-5fc09.firebaseio.com/products/$id.json';
+    final index = _items.indexWhere((product) => product.id == id);
+    var product = _items[index];
+    _items.removeAt(index);
     notifyListeners();
+    return http.delete(url).then((response) {
+      if (response.statusCode >= 400) {
+        _items.insert(index, product);
+        notifyListeners();
+        throw HttpException('Deleting failed!');
+      } else {
+        product = null;
+      }
+    });
   }
 
   Product findById(String id) {

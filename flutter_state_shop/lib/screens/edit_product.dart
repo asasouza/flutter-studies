@@ -103,13 +103,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
         });
       });
     } else {
-      products.updateItem(
+      products
+          .updateItem(
         product.id,
         product,
-      );
-      Navigator.of(context).pop();
-      setState(() {
-        _isLoading = false;
+      )
+          .then((_) {
+        Navigator.of(context).pop();
+        setState(() {
+          _isLoading = false;
+        });
       });
     }
   }
