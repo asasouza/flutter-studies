@@ -22,8 +22,12 @@ class Products with ChangeNotifier {
   Future<void> fetchAndSetItems() {
     return http.get(url).then((response) {
       var decodedResponse = json.decode(response.body) as Map<String, dynamic>;
+      if(decodedResponse == null) {
+        return;
+      }
+      final List<Product> loadedProducts = [];
       decodedResponse.forEach((productId, product) {
-        _items.add(Product(
+        loadedProducts.add(Product(
           id: productId,
           description: product['description'],
           imageUrl: product['imageUrl'],
@@ -32,6 +36,7 @@ class Products with ChangeNotifier {
           title: product['title'],
         ));
       });
+      _items = loadedProducts;
       notifyListeners();
     });
   }

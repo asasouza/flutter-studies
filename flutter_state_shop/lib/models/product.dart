@@ -25,7 +25,7 @@ class Product with ChangeNotifier {
     isFavorite = !isFavorite;
     notifyListeners();
     final url =
-        'https://flutter-studies-5fc09.firebaseio.com/products/$id';
+        'https://flutter-studies-5fc09.firebaseio.com/products/$id.json';
     http
         .patch(
       url,

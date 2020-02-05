@@ -37,20 +37,7 @@ class CartScreen extends StatelessWidget {
                     labelStyle: TextStyle(color: Colors.white),
                   ),
                   Spacer(),
-                  OutlineButton(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    child: Text('ORDER NOW'),
-                    onPressed: () {
-                      Provider.of<Orders>(context, listen: false).addOrder(
-                        cart.itemsSum,
-                        cart.items.values.toList(),
-                      );
-                      cart.clear();
-                    },
-                    textColor: Theme.of(context).primaryColor,
-                  ),
+                  OrderButton(cart: cart),
                 ],
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
@@ -78,6 +65,62 @@ class CartScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  const OrderButton({
+    Key key,
+    @required this.cart,
+  }) : super(key: key);
+
+  final Cart cart;
+
+  @override
+  _OrderButtonState createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  var _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlineButton(
+      borderSide: BorderSide(
+        color: Theme.of(context).primaryColor,
+      ),
+      child: _isLoading
+          ? Center(
+              child: SizedBox(
+                child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).primaryColor)),
+                height: 15,
+                width: 15,
+              ),
+            )
+          : Text('ORDER NOW'),
+      onPressed: widget.cart.items.length == 0
+          ? null
+          : () {
+              setState(() {
+                _isLoading = true;
+              });
+              Provider.of<Orders>(context, listen: false)
+                  .addOrder(
+                widget.cart.itemsSum,
+                widget.cart.items.values.toList(),
+              )
+                  .then((_) {
+                setState(() {
+                  _isLoading = false;
+                });
+                widget.cart.clear();
+              });
+            },
+      textColor: Theme.of(context).primaryColor,
     );
   }
 }
