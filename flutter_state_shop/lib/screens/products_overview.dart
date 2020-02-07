@@ -13,6 +13,7 @@ import '../screens/cart.dart';
 enum PopMenuOptions { Favorites, All }
 
 class ProductsOverviewScreen extends StatefulWidget {
+  static const routeName = '/products';
   @override
   _ProductsOverviewScreenState createState() => _ProductsOverviewScreenState();
 }
