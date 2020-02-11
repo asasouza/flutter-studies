@@ -7,9 +7,10 @@ import './exception_http.dart';
 import './product.dart';
 
 class Products with ChangeNotifier {
-  final url = 'https://flutter-studies-5fc09.firebaseio.com/products.json';
-
+  final String token;
   List<Product> _items = [];
+
+  Products(this.token, this._items);
 
   List<Product> get items {
     return [..._items];
@@ -20,6 +21,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetItems() {
+    final url = 'https://flutter-studies-5fc09.firebaseio.com/products.json?auth=$token';
     return http.get(url).then((response) {
       var decodedResponse = json.decode(response.body) as Map<String, dynamic>;
       if(decodedResponse == null) {
@@ -42,6 +44,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addNewItem(Product product) {
+    final url = 'https://flutter-studies-5fc09.firebaseio.com/products.json?auth=$token';
     return http
         .post(
       url,
@@ -70,7 +73,7 @@ class Products with ChangeNotifier {
     final index = _items.indexWhere((product) => product.id == id);
     if (index >= 0) {
       final url =
-          'https://flutter-studies-5fc09.firebaseio.com/products/$id.json';
+          'https://flutter-studies-5fc09.firebaseio.com/products/$id.json?auth=$token';
       return http
           .patch(
         url,
@@ -90,7 +93,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> deleteItem(String id) {
-    final url = 'https://flutter-studies-5fc09.firebaseio.com/products/$id.json';
+    final url = 'https://flutter-studies-5fc09.firebaseio.com/products/$id.json?auth=$token';
     final index = _items.indexWhere((product) => product.id == id);
     var product = _items[index];
     _items.removeAt(index);

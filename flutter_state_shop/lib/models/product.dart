@@ -20,12 +20,12 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  void toggleFavorite() {
+  void toggleFavorite(String authToken) {
     final oldFavorite = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
     final url =
-        'https://flutter-studies-5fc09.firebaseio.com/products/$id.json';
+        'https://flutter-studies-5fc09.firebaseio.com/products/$id.json?auth=$authToken';
     http
         .patch(
       url,
