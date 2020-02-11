@@ -11,9 +11,14 @@ import './edit_product.dart';
 class UserProductsScreen extends StatelessWidget {
   static const routeName = '/user-products';
 
+  Future<void> fetchProducts(BuildContext context) {
+    return Provider.of<Products>(context, listen: false).fetchAndSetItems(
+      filterByUser: true,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final products = Provider.of<Products>(context);
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
@@ -26,23 +31,37 @@ class UserProductsScreen extends StatelessWidget {
         ],
         title: Text('Your Products'),
       ),
-      body: RefreshIndicator(
-        child: Padding(
-          child: ListView.builder(
-            itemBuilder: (context, index) {
-              final product = products.items[index];
-              return UserProductItem(
-                id: product.id,
-                imageUrl: product.imageUrl,
-                price: product.price,
-                title: product.title,
-              );
-            },
-            itemCount: products.items.length,
-          ),
-          padding: EdgeInsets.all(8),
-        ),
-        onRefresh: Provider.of<Products>(context, listen: false).fetchAndSetItems,
+      body: FutureBuilder(
+        future: fetchProducts(context),
+        builder: (context, snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+                ? Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  )
+                : RefreshIndicator(
+                    child: Consumer<Products>(
+                      builder: (context, products, _) => Padding(
+                        child: ListView.builder(
+                          itemBuilder: (context, index) {
+                            final product = products.items[index];
+                            return UserProductItem(
+                              id: product.id,
+                              imageUrl: product.imageUrl,
+                              price: product.price,
+                              title: product.title,
+                            );
+                          },
+                          itemCount: products.items.length,
+                        ),
+                        padding: EdgeInsets.all(8),
+                      ),
+                    ),
+                    onRefresh: () => fetchProducts(context),
+                  ),
       ),
       drawer: AppDrawer(),
     );

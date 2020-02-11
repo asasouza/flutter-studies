@@ -8,9 +8,10 @@ import './product.dart';
 
 class Products with ChangeNotifier {
   final String token;
+  final String userId;
   List<Product> _items = [];
 
-  Products(this.token, this._items);
+  Products(this.token, this.userId, this._items);
 
   List<Product> get items {
     return [..._items];
@@ -20,31 +21,39 @@ class Products with ChangeNotifier {
     return _items.where((product) => product.isFavorite).toList();
   }
 
-  Future<void> fetchAndSetItems() {
-    final url = 'https://flutter-studies-5fc09.firebaseio.com/products.json?auth=$token';
+  Future<void> fetchAndSetItems({ bool filterByUser = false}) {
+    final filterBy = filterByUser ? '&orderBy="creatorId"&equalTo="$userId"' : '';
+    var url =
+        'https://flutter-studies-5fc09.firebaseio.com/products.json?auth=$token$filterBy';
+    
     return http.get(url).then((response) {
       var decodedResponse = json.decode(response.body) as Map<String, dynamic>;
-      if(decodedResponse == null) {
+      if (decodedResponse == null) {
         return;
       }
-      final List<Product> loadedProducts = [];
-      decodedResponse.forEach((productId, product) {
-        loadedProducts.add(Product(
-          id: productId,
-          description: product['description'],
-          imageUrl: product['imageUrl'],
-          isFavorite: product['isFavorite'],
-          price: product['price'],
-          title: product['title'],
-        ));
+      url = 'https://flutter-studies-5fc09.firebaseio.com/favorites/$userId.json?auth=$token';
+      http.get(url).then((response) {
+        final favorites = json.decode(response.body);
+        final List<Product> loadedProducts = [];
+        decodedResponse.forEach((productId, product) {
+          loadedProducts.add(Product(
+            id: productId,
+            description: product['description'],
+            imageUrl: product['imageUrl'],
+            isFavorite: favorites == null ? false : favorites[productId] ?? false,
+            price: product['price'],
+            title: product['title'],
+          ));
+        });
+        _items = loadedProducts;
+        notifyListeners();
       });
-      _items = loadedProducts;
-      notifyListeners();
     });
   }
 
   Future<void> addNewItem(Product product) {
-    final url = 'https://flutter-studies-5fc09.firebaseio.com/products.json?auth=$token';
+    final url =
+        'https://flutter-studies-5fc09.firebaseio.com/products.json?auth=$token';
     return http
         .post(
       url,
@@ -53,7 +62,7 @@ class Products with ChangeNotifier {
         'imageUrl': product.imageUrl,
         'title': product.title,
         'price': product.price,
-        'isFavorite': product.isFavorite,
+        'creatorId': userId,
       }),
     )
         .then((response) {
@@ -93,7 +102,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> deleteItem(String id) {
-    final url = 'https://flutter-studies-5fc09.firebaseio.com/products/$id.json?auth=$token';
+    final url =
+        'https://flutter-studies-5fc09.firebaseio.com/products/$id.json?auth=$token';
     final index = _items.indexWhere((product) => product.id == id);
     var product = _items[index];
     _items.removeAt(index);

@@ -20,16 +20,17 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  void toggleFavorite(String authToken) {
+  void toggleFavorite(String authToken, String userId) {
     final oldFavorite = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
     final url =
-        'https://flutter-studies-5fc09.firebaseio.com/products/$id.json?auth=$authToken';
-    http
-        .patch(
+        'https://flutter-studies-5fc09.firebaseio.com/favorites/$userId/$id.json?auth=$authToken';
+    http.put(
       url,
-      body: json.encode({'isFavorite': isFavorite}),
+      body: json.encode(
+        isFavorite,
+      ),
     )
         .then((response) {
       if (response.statusCode >= 400) {
