@@ -20,28 +20,36 @@ class PlacesListScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Consumer<Places>(
-        builder: (ctx, places, child) => places.places.length == 0
-            ? child
-            : ListView.separated(
-                itemBuilder: (context, index) {
-                  final place = places.places[index];
-                  return ListTile(
-                    contentPadding: EdgeInsets.all(10),
-                    leading: CircleAvatar(
-                      backgroundImage: FileImage(place.image),
-                      radius: 30,
+      body: FutureBuilder(
+        builder: (context, snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Consumer<Places>(
+                    builder: (ctx, places, child) => places.places.length == 0
+                        ? child
+                        : ListView.separated(
+                            itemBuilder: (context, index) {
+                              final place = places.places[index];
+                              return ListTile(
+                                contentPadding: EdgeInsets.all(10),
+                                leading: CircleAvatar(
+                                  backgroundImage: FileImage(place.image),
+                                  radius: 30,
+                                ),
+                                title: Text(place.title),
+                                onTap: () {},
+                              );
+                            },
+                            itemCount: places.places.length,
+                            separatorBuilder: (context, index) => Divider(),
+                          ),
+                    child: Center(
+                      child: Text('No places added yet.'),
                     ),
-                    title: Text(place.title),
-                    onTap: () {},
-                  );
-                },
-                itemCount: places.places.length,
-                separatorBuilder: (context, index) => Divider(),
-              ),
-        child: Center(
-          child: Text('No places added yet.'),
-        ),
+                  ),
+        future: Provider.of<Places>(context, listen: false).getAndSetPlaces(),
       ),
     );
   }
