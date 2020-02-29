@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/places.dart';
 
 import './add_place.dart';
+import './place_details.dart';
 
 class PlacesListScreen extends StatelessWidget {
   @override
@@ -39,7 +40,13 @@ class PlacesListScreen extends StatelessWidget {
                                   radius: 30,
                                 ),
                                 title: Text(place.title),
-                                onTap: () {},
+                                subtitle: Text(place.location.address),
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                    PlaceDetailsScreen.routeName,
+                                    arguments: place.id,
+                                  );
+                                },
                               );
                             },
                             itemCount: places.places.length,

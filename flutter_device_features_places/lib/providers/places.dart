@@ -13,14 +13,19 @@ class Places extends ChangeNotifier {
     return [..._places];
   }
 
+  Place findById(String id) {
+    return _places.firstWhere((place) => place.id == id);
+  }
+
   void addPlace({
     @required String title,
     @required File image,
+    @required PlaceLocation location,
   }) async {
     final place = Place(
       id: UniqueKey().toString(),
       image: image,
-      location: null,
+      location: location,
       title: title,
     );
     _places.add(place);
@@ -29,6 +34,9 @@ class Places extends ChangeNotifier {
       'id': place.id,
       'image': place.image.path,
       'title': place.title,
+      'latitude': place.location.latitude,
+      'longitude': place.location.longitude,
+      'address': place.location.address,
     });
   }
 
@@ -39,7 +47,11 @@ class Places extends ChangeNotifier {
           (place) => Place(
             id: place['id'],
             image: File(place['image']),
-            location: null,
+            location: PlaceLocation(
+              latitude: place['latitude'],
+              longitude: place['longitude'],
+              address: place['address'],
+            ),
             title: place['title'],
           ),
         )
