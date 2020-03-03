@@ -1,4 +1,4 @@
-package com.example.flutter_device_features_places
+package com.asasouza.places_app
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
