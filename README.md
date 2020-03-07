@@ -1,11 +1,12 @@
 # Projetos de Estudo com Flutter
 Este repositório é um conjunto de pequenos apps desenvolvidos durante o curso [**A Complete Guide to the Flutter SDK & Flutter Framework**](https://www.udemy.com/share/1013o4BEccdllXR3o=/), realizado dentro da plataforma Udemy. 
+
 No decorrer do curso foram desenvolvidos 06 pequenos apps com intuito de demonstrar e praticar conceitos sobre a linguagem Dart e o framework Flutter.
 
 ## Sobre os projetos
 Todos os projetos foram desenvolvidos no decorrer do curso, alguns projetos se extendiam por mais de um módulo, e a evolução de cada app pode ser acompanhada pelos commits deste repositório, que numera a aula de inicio e fim realizada. 
 
-Dentro da pasta de cada app há uma pasta ```/image``` contendo prints das telas.
+Dentro da pasta de cada app há uma pasta ```/images``` contendo prints das telas.
 
 Abaixo um breve descritivo de cada projeto e quais os principais assuntos abordados durante o desenvolvimento.
 
@@ -16,7 +17,7 @@ Abaixo um breve descritivo de cada projeto e quais os principais assuntos aborda
   
   Conceitos abordados:
   
-    1. Estrutura da linguagem (classes, funções, tipos, objetos, condicionais, etc);
+    1. Estrutura da linguagem (classes, funções, tipos, objetos, condicionais, loops, etc);
     2. Widgets & Statefull e Stateless;
     3. Maps e Lists em Dart;
     4. DartDevTools e Emuladores.
@@ -41,7 +42,7 @@ Abaixo um breve descritivo de cada projeto e quais os principais assuntos aborda
 ### Flutter Meals (Navegaçao)
   Nome da pasta: flutter_navigation_meals
   
-  Um app que contem uma série de receitas, separadas por categorias, e as exibe, mostrando os ingredientes e passo-a-passo da receita. É possível tambem "favoritar" as receitas, que aparem em uma aba separada após a seleção. Tambem há um menu lateral que permite acesso as configuracoes do app, onde é possivel incluir filtros para as receitas que aparecem na tela principal. Os dados utilizados neste app são todos estáticos, armazenados dentro do próprio projeto.
+  Um app que contém uma série de receitas, separadas por categorias, e as exibe, mostrando os ingredientes e passo-a-passo da receita. É possível "favoritar" as receitas, que aparecem em uma aba separada após a seleção. Tambem há um menu lateral que permite acesso as configuracoes do app, onde é possivel incluir filtros para as receitas que aparecem na tela principal. Os dados utilizados neste app são todos estáticos, armazenados dentro do próprio projeto.
   
   Conceitos abordados:
   
@@ -54,7 +55,7 @@ Abaixo um breve descritivo de cada projeto e quais os principais assuntos aborda
 ### Flutter Shop (Gerenciamento de Estado/State Management)
   Nome da pasta: flutter_state_shop
   
-  Um app simulando o funcionamento de uma loja, onde é possível visualizar, cadastrar e criar pedidos de produtos. Assim como uma loja é necessária a autenticação do usuário. Neste app, como no anterior, e possivel marcar produtos como favoritos e filtrar os itens que aparecem na tela inicial. Neste app é utilizado o Google Firebase como banco de dados/api;
+  Um app simulando o funcionamento de uma loja, onde é possível visualizar, cadastrar e criar pedidos de produtos. Assim como uma loja é necessária a autenticação do usuário. Neste app, como no anterior, e possível marcar produtos como favoritos e filtrar os itens que aparecem na tela inicial. Neste app é utilizado o Google Firebase como banco de dados/api;
   
   Conceitos abordados:
   
@@ -72,11 +73,11 @@ Abaixo um breve descritivo de cada projeto e quais os principais assuntos aborda
 ### Flutter Places (Funcionalidades do Disposito)
   Nome da pasta: flutter_native_code
   
-  Um app criado para utilizar funcionalidades do aparelho celular, neste caso a camera e o GPS. Trata-se de um app que permite cadastrar locais favoritos, incluindo um titulo, imagem e localização. Nesta aplicação as informações do aplicativo são armazenadas numa base de dados da própria aplicação utilizando SQLite.
+  Um app criado para utilizar funcionalidades do aparelho celular, neste caso a câmera e o GPS. Trata-se de um app que permite cadastrar locais favoritos, incluindo um título, imagem e localização. Nesta aplicação as informações do aplicativo são armazenadas numa base de dados da própria aplicação utilizando SQLite.
   
   Conceitos abordados:
   
-    1. Utilizacao da camera e galeria de imagens do dispositivo;
+    1. Utilizacao da câmera e acesso à galeria de imagens do dispositivo;
     2. SQLite;
     3. Utilizacao do GPS;
     4. Google Maps;
@@ -85,7 +86,7 @@ Abaixo um breve descritivo de cada projeto e quais os principais assuntos aborda
 ### Flutter Battery (Código Nativo)
   Nome da pasta: flutter_native_code
   
-  Um app simples que mostra o nível de bateria do dispositivo, utilizando Java e Swift, linguagem nativa dos sistemas Android e iOS, respectivamente. O exemplo foi retirado diretamente da documentacao do Flutter;
+  Um app simples que mostra o nível de bateria do dispositivo, utilizando Java e Swift, linguagem nativa dos sistemas Android e iOS, respectivamente. O exemplo foi retirado diretamente da documentação do Flutter;
   
   Conceitos abordados:
   
